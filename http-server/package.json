@@ -1,0 +1,16 @@
+{
+  "name": "http-server",
+  "version": "1.0.0",
+  "description": "My http server application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aradhya",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^9.11.1",
+    "minimist": "^1.2.8"
+  }
+}
