@@ -1,64 +1,62 @@
-const todoList = () => {
-    let all = []
-    const add = (todoItem) => {
-      all.push(todoItem)
-    }
-    const markAsComplete = (index) => {
-      all[index].completed = true
-    }
-  
-    const overdue = () => {
-      return all.filter((item) => item.dueDate < new Date().toISOString().slice(0, 10));
-    };
-    const dueToday = () => {
-      return all.filter((item) => item.dueDate === new Date().toISOString().slice(0, 10));
-    };
-    const dueLater = () => {
-      return all.filter((item) => item.dueDate > new Date().toISOString().slice(0, 10));
-    };
-    const toDisplayableList = (list) => {
-      return list.map(item => `${item.completed ? '[x]' : '[ ]'} ${item.title} ${item.dueDate === new Date().toISOString().slice(0, 10) ? '' : item.dueDate}`)
-    }
-    return { all, add, markAsComplete, overdue, dueToday, dueLater, toDisplayableList };
-};
-const todos = todoList();
+/* eslint-disable no-undef */
 
-const formattedDate = d => {
-  return d.toISOString().split("T")[0]
-}
+const todoList = require('todo-cli/todo');
+const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 
-var dateToday = new Date()
-const today = formattedDate(dateToday)
-const yesterday = formattedDate(
-  new Date(new Date().setDate(dateToday.getDate() - 1))
-)
-const tomorrow = formattedDate(
-  new Date(new Date().setDate(dateToday.getDate() + 1))
-)
+describe("Todolist Test Suite", () => {
+  beforeAll(() => {
+    add({
+      title: "Test todo",
+      completed: false,
+      dueDate: new Date().toISOString().slice(0, 10)
+    });
+  });
 
-todos.add({ title: 'Submit assignment', dueDate: yesterday, completed: false })
-todos.add({ title: 'Pay rent', dueDate: today, completed: true })
-todos.add({ title: 'Service Vehicle', dueDate: today, completed: false })
-todos.add({ title: 'File taxes', dueDate: tomorrow, completed: false })
-todos.add({ title: 'Pay electric bill', dueDate: tomorrow, completed: false })
+  test("Should add new todo", () => {
+    const todoItemsCount = all.length;
+    add({
+      title: "Test todo",
+      completed: false,
+      dueDate: new Date().toISOString().slice(0, 10)
+    });
+    expect(all.length).toBe(todoItemsCount + 1);
+  });
 
-console.log("My Todo-list\n")
+  test("Should mark a todo as complete", () => {
+    expect(all[0].completed).toBe(false);
+    markAsComplete(0);
+    expect(all[0].completed).toBe(true);
+  });
 
-console.log("Overdue")
-var overdues = todos.overdue()
-var formattedOverdues = todos.toDisplayableList(overdues)
-console.log(formattedOverdues)
-console.log("\n")
+  test("Should retrieve overdue items", () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    add({
+      title: "Overdue todo",
+      completed: false,
+      dueDate: yesterday.toISOString().slice(0, 10)
+    });
+    expect(overdue().length).toBeGreaterThanOrEqual(1); 
+  });
 
-console.log("Due Today")
-let itemsDueToday = todos.dueToday()
-let formattedItemsDueToday = todos.toDisplayableList(itemsDueToday)
-console.log(formattedItemsDueToday)
-console.log("\n")
+  test("Should retrieve due today items", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    add({
+      title: "Due today todo",
+      completed: false,
+      dueDate: today
+    });
+    expect(dueToday().length).toBeGreaterThanOrEqual(1);
+  });
 
-console.log("Due Later")
-let itemsDueLater = todos.dueLater()
-let formattedItemsDueLater = todos.toDisplayableList(itemsDueLater)
-console.log(formattedItemsDueLater)
-console.log("\n\n")  
-module.exports = todoList;
+  test("Should retrieve due later items", () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    add({
+      title: "Due tomorrow todo",
+      completed: false,
+      dueDate: tomorrow.toISOString().slice(0, 10)
+    });
+    expect(dueLater().length).toBeGreaterThanOrEqual(1);
+  });
+});
