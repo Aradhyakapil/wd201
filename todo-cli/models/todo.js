@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
 
     // Fetch today's items (dueDate is equal to today)
     static async dueToday() {
-      const today = new Date();
+      const today = new Date().toISOString().split('T')[0];
       return await Todo.findAll({
         where: {
           dueDate: today
@@ -77,12 +77,19 @@ module.exports = (sequelize, DataTypes) => {
     // Display task in a formatted way
     displayableString() {
       let checkbox = this.completed ? "[x]" : "[ ]";
+      const today = new Date().toISOString().split('T')[0];
+
+      // If the task is due today, don't show the date
+      if (this.dueDate === today) {
+        return `${this.id}. ${checkbox} ${this.title}`;
+      }
+
+      // Otherwise, show the date
       const formattedDate = typeof this.dueDate === 'string' 
         ? this.dueDate  // If dueDate is already a string (from Sequelize)
         : this.dueDate.toISOString().split('T')[0];  // If it's a Date object
       return `${this.id}. ${checkbox} ${this.title} ${formattedDate}`;
     }
-    
   }
 
   Todo.init({
