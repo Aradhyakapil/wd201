@@ -1,0 +1,45 @@
+<table id="todos-table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Completed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (allTodos.length === 0) { %>
+            <tr>
+                <td colspan="4">No To-Dos Yet</td>
+            </tr>
+        <% } else { %>
+            <% allTodos.forEach(function(todo) { %>
+                <tr>
+                    <td><%= todo.title %></td>
+                    <td><%= todo.dueDate %></td>
+                    <td><%= todo.completed ? 'Yes' : 'No' %></td>
+                    <td>
+                        <button class="mark-complete" data-id="<%= todo.id %>">Mark Complete</button>
+                        <button class="delete-todo" data-id="<%= todo.id %>">Delete</button>
+                    </td>
+                </tr>
+            <% }); %>
+        <% } %>
+    </tbody>
+</table>
+
+<script>
+    // Add event listeners for "Mark Complete" and "Delete" buttons here
+    const markCompleteButtons = document.querySelectorAll('.mark-complete');
+    markCompleteButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const todoId = event.target.dataset.id;
+            const response = await fetch(`/todos/${todoId}/markAsCompleted`, {
+                method: 'PUT'
+            });
+            // Update the table or reload the page after the update
+        });
+    });
+
+    // Implement similar logic for "Delete" buttons
+</script>
