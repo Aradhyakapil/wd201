@@ -1,6 +1,7 @@
 <div>
     <!-- Overdue Section -->
-    <h5>Overdue <span id="count-overdue" class="bg-gray-200 rounded px-2 py-1 text-gray-700 text-xs font-medium"><%= overdueTodos.length %></span></h5>
+    <h5>Overdue</h5>
+    <span id="count-overdue" class="bg-gray-200 rounded px-2 py-1 text-gray-700 text-xs font-medium"><%= overdueTodos.length %></span>
     <ul class="list-none">
         <% if (overdueTodos.length === 0) { %>
             <li>No overdue to-dos</li>
@@ -23,7 +24,8 @@
     </ul>
 
     <!-- Due Today Section -->
-    <h5>Due Today <span id="count-due-today" class="bg-gray-200 rounded px-2 py-1 text-gray-700 text-xs font-medium"><%= dueTodayTodos.length %></span></h5>
+    <h5>Due Today</h5>
+    <span id="count-due-today" class="bg-gray-200 rounded px-2 py-1 text-gray-700 text-xs font-medium"><%= dueTodayTodos.length %></span>
     <ul class="list-none">
         <% if (dueTodayTodos.length === 0) { %>
             <li>No to-dos due today</li>
@@ -46,7 +48,8 @@
     </ul>
 
     <!-- Due Later Section -->
-    <h5>Due Later <span id="count-due-later" class="bg-gray-200 rounded px-2 py-1 text-gray-700 text-xs font-medium"><%= dueLaterTodos.length %></span></h5>
+    <h5>Due Later</h5>
+    <span id="count-due-later" class="bg-gray-200 rounded px-2 py-1 text-gray-700 text-xs font-medium"><%= dueLaterTodos.length %></span>
     <ul class="list-none">
         <% if (dueLaterTodos.length === 0) { %>
             <li>No to-dos due later</li>
